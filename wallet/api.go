@@ -18,4 +18,12 @@ type (
 		ReferenceID string
 		Description string
 	}
+
+	Payment struct {
+		WalletID    string
+		Merchant    string
+		Amount      int64
+		ReferenceID string
+		Description string
+	}
 )

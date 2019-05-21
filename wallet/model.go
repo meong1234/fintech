@@ -1,10 +1,16 @@
 package wallet
 
-import "time"
+import (
+	"fmt"
+	"time"
+)
 
 const (
 	CUSTOMER = iota
-	Merchant
+	MERCHANT
+
+	TXN_TOPUP = iota
+	TXN_PAYMENT
 )
 
 type (
@@ -26,12 +32,23 @@ type (
 		TransactionID   string
 		ReferenceID     string
 		CreditWallet    string
+		DebitedWallet   string
 		Description     string
 		TransactionDate time.Time
 		Amount          int64
+		TransactionType int
 	}
 )
 
-func (w *Wallet) creditBalance(amount int64) {
-	w.Balance = + amount
+func (w *Wallet) creditBalance(amount int64) error {
+	w.Balance = w.Balance + amount
+	return nil
+}
+
+func (w *Wallet) debitBalance(amount int64) error {
+	if w.Balance < amount {
+		return fmt.Errorf("insuficient balance")
+	}
+	w.Balance = w.Balance - amount
+	return nil
 }

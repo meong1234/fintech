@@ -31,6 +31,11 @@ func (r *WalletRepoMock) FindByID(walletID string) (*Wallet, error) {
 	return args.Get(0).(*Wallet), args.Error(1)
 }
 
+func (r *WalletRepoMock) FindByUserID(userID string) (*Wallet, error) {
+	args := r.Called(userID)
+	return args.Get(0).(*Wallet), args.Error(1)
+}
+
 func (r *WalletRepoMock) Save(wallet *Wallet) (error) {
 	args := r.Called(wallet)
 	return args.Error(0)
@@ -38,6 +43,11 @@ func (r *WalletRepoMock) Save(wallet *Wallet) (error) {
 
 func (r *UserRepoMock) FindByID(userID string) (*UserAccount, error) {
 	args := r.Called(userID)
+	return args.Get(0).(*UserAccount), args.Error(1)
+}
+
+func (r *UserRepoMock) FindMerchantAccountByName(name string) (*UserAccount, error) {
+	args := r.Called(name)
 	return args.Get(0).(*UserAccount), args.Error(1)
 }
 
