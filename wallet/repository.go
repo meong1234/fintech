@@ -10,4 +10,9 @@ type (
 		FindByID(walletID string) (*Wallet, error)
 		Save(wallet *Wallet) (error)
 	}
+
+	TransactionRepo interface {
+		FindByID(txnID string) (*Transaction, error)
+		Save(txn *Transaction) (error)
+	}
 )

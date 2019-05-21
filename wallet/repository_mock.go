@@ -10,7 +10,21 @@ type (
 	WalletRepoMock struct {
 		mock.Mock
 	}
+
+	TransactionRepoMock struct {
+		mock.Mock
+	}
 )
+
+func (r *TransactionRepoMock) FindByID(txnID string) (*Transaction, error) {
+	args := r.Called(txnID)
+	return args.Get(0).(*Transaction), args.Error(1)
+}
+
+func (r *TransactionRepoMock) Save(txn *Transaction) (error) {
+	args := r.Called(txn)
+	return args.Error(0)
+}
 
 func (r *WalletRepoMock) FindByID(walletID string) (*Wallet, error) {
 	args := r.Called(walletID)

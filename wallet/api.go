@@ -11,4 +11,11 @@ type (
 		Name  string
 		Email string
 	}
+
+	TopUp struct {
+		WalletID    string
+		Amount      int64
+		ReferenceID string
+		Description string
+	}
 )

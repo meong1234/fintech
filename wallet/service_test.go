@@ -1,10 +1,11 @@
 package wallet
 
 import (
-	"github.com/stretchr/testify/mock"
+	uuid "github.com/satori/go.uuid"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
 )
 
 func TestWalletServiceImpl_RegisterCustomer(t *testing.T) {
@@ -47,8 +48,8 @@ func TestWalletServiceImpl_RegisterMerchant(t *testing.T) {
 	}
 
 	cmd := RegisterMerchant{
-		Name:        "ApangAIS",
-		Email:       "ApangAIS@mail.com",
+		Name:  "ApangAIS",
+		Email: "ApangAIS@mail.com",
 	}
 
 	userRepo.On("Save", mock.MatchedBy(func(req *UserAccount) bool {
@@ -63,4 +64,46 @@ func TestWalletServiceImpl_RegisterMerchant(t *testing.T) {
 	walletID, err := service.RegisterMerchant(&cmd)
 	assert.NoError(t, err)
 	assert.NotNil(t, walletID)
+}
+
+func TestWalletServiceImpl_Topup(t *testing.T) {
+	userRepo := &UserRepoMock{}
+	walletRepo := &WalletRepoMock{}
+	txnRepo := &TransactionRepoMock{}
+
+	service := WalletServiceImpl{
+		userRepo:        userRepo,
+		walletRepo:      walletRepo,
+		transactionRepo: txnRepo,
+	}
+
+	walletID := "SOME_WALLET_ID"
+	wallet := Wallet{
+		WalletID: walletID,
+		UserID:   uuid.NewV4().String(),
+	}
+	walletRepo.On("FindByID", walletID).Return(&wallet, nil)
+	walletRepo.On("Save", mock.MatchedBy(func(req *Wallet) bool {
+		assert.Equal(t, int64(100000), req.Balance)
+		return true
+	})).Return(nil)
+
+	cmd := TopUp{
+		WalletID:    walletID,
+		Description: "FROM BANK XX",
+		ReferenceID: "BANK_0001",
+		Amount:      int64(100000),
+	}
+
+	txnRepo.On("Save", mock.MatchedBy(func(req *Transaction) bool {
+		assert.Equal(t, cmd.ReferenceID, req.ReferenceID)
+		assert.Equal(t, cmd.Description, req.Description)
+		assert.Equal(t, walletID, req.CreditWallet)
+		assert.Equal(t, cmd.Amount, req.Amount)
+		return true
+	})).Return(nil)
+
+	txnID, err := service.Topup(&cmd)
+	assert.NoError(t, err)
+	assert.NotNil(t, txnID)
 }
