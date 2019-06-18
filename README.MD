@@ -1,6 +1,16 @@
 # Fintech Project
 
-Problem Statement:
+
+##### Dependencies:
+ - golang `https://golang.org/doc/install`
+ - dep `https://github.com/golang/dep`
+ 
+##### Build:
+```
+make build
+```
+
+### Problem Statement:
 
 Suatu hari anda terfikir untuk membangun sebuah applikasi fintech yang dapat melakukan transaksi non tunai, sebagai Minimum Viable Productnya anda ingin applikasi ini memiliki feature berikut
  
@@ -10,13 +20,13 @@ Suatu hari anda terfikir untuk membangun sebuah applikasi fintech yang dapat mel
   - customer dapat melakukan pengisian balance (Topup)
   - customer dapat melakukan pembayaran kepada merchant" yang telah terdaftar 
 
-Meet the actor :
- -> customer: 
- -> merchant: 
+#### Meet the actor :
+ - customer: 
+ - merchant: 
 
--> transaksi 
-    -> customer dapat topup
-    -> customer dapat transaksi ke merchant yang telah terdaftar
+ - transaksi 
+    - customer dapat topup
+    - customer dapat transaksi ke merchant yang telah terdaftar
 
 Some Spec: 
 ```
