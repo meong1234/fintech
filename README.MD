@@ -116,3 +116,7 @@ API:
       "merchant_id": ""
     }
  ```
+ 
+ ### TODO:
+ 
+ masi banyak kekurangan dari implementasi code ini, misalnya implementasi repository yang belum ada (hanya mock), kebutuhan untuk wrap logic kedalam database transaction (for consistency) dan non happy path test
