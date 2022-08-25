@@ -6,7 +6,7 @@ import (
 )
 
 const (
-	CUSTOMER = iota
+	CUSTOMER = iota // expected to return customer id
 	MERCHANT
 
 	TXN_TOPUP = iota
